@@ -234,9 +234,6 @@ class VueTree extends Component {
   
   draw() {
     const [nodeDataList, linkDataList] = this.buildTree(this.props.dataset)
-    this.setState({
-      linkDataList: linkDataList
-    })
     const svg = this.state.d3.select(this.svg.current)
 
     const self = this
@@ -272,6 +269,7 @@ class VueTree extends Component {
       .remove()
 
     this.setState({
+      linkDataList: linkDataList,
       nodeDataList: nodeDataList
     })
   }
@@ -333,7 +331,8 @@ class VueTree extends Component {
     }
   }
   onClickNode(index) {
-    const curNode = this.nodeDataList[index]
+    console.log(index)
+    const curNode = this.state.nodeDataList[index]
     if (curNode.data.children) {
       curNode.data._children = curNode.data.children
       curNode.data.children = null
@@ -405,7 +404,7 @@ class VueTree extends Component {
                       <div style={{width: '100%'}}>
                           <div className="node-title">{node.data.name}</div>
                           {(node.data.children || node.data._collapsed) &&
-                            <div className="node-toggle" onClick={this.props.onClickNode(index)}>
+                            <div className="node-toggle" onClick={ () => this.onClickNode(index)}>
                               <FontAwesome name={node.data._collapsed ? "chevron-up" : "chevron-down"} />
                             </div>
                           }

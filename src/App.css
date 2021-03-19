@@ -107,11 +107,15 @@ a {
     width: 100%;
     padding: 8px;
 }
+.node-details-item > span {
+  margin-right: 8px
+}
+
 .node-toggle {
   position: absolute;
   color: #F0AB00;
   right: 24px;
-  top: 24px;
+  top: 20px;
   cursor: pointer;
 }
 .red {

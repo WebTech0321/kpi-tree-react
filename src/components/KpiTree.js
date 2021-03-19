@@ -7,7 +7,12 @@ class KpiTree extends Component {
   constructor(props) {
     super(props)
 
-    this.container = React.createRef()
+    this.treeContainer = React.createRef()
+
+    this.resizeHandler = this.resizeHandler.bind(this)
+    this.zoomIn = this.zoomIn.bind(this)
+    this.zoomOut = this.zoomOut.bind(this)
+    this.zoomReset = this.zoomReset.bind(this)
     
     this.state = {
       treeW: 1200,
@@ -93,18 +98,16 @@ class KpiTree extends Component {
   }
 
   resizeHandler () {
-    this.treeW = this.container.current.clientWidth
-    this.treeH = this.container.current.clientHeight
+    this.setState( {
+      treeW: this.treeContainer.current.clientWidth,
+      treeH: this.treeContainer.current.clientHeight
+    })
 
     this.treeRef.setTransform(this.treeW, this.treeH)
   }
 
-  onClickNode (index) {
-    if( this.treeRef )
-      this.treeRef.onClickNode(index)
-  }
-
   zoomIn () {
+    console.log(this.treeRef)
     this.treeRef.zoomIn()
   }
 
@@ -122,18 +125,17 @@ class KpiTree extends Component {
       return (         
         <div>
           <h1>{ this.props.msg }</h1>
-          <div className="tree-container" ref={this.container}>
-          <VueTree 
-                onRef={ref => (this.treeRef = ref)}
+          <div className="tree-container" ref={this.treeContainer}>
+            <VueTree 
+                onRef={ref => { this.treeRef = ref; console.log(this.treeRef)}}
                 style={{width: treeW + 'px', height: treeH + 'px'}}
                 dataset={tree}
                 config={treeConfig}
-                linkStyle="straight"
-                onClickNode={this.onClickNode} >
+                linkStyle="straight">
             </VueTree>
 
             <div className="tree-toolbar">
-                <div className="btn-toolbar" onClick={this.zoomIn}><FontAwesome name="plus" /></div>
+                <div className="btn-toolbar" onClick={this.zoomIn}><FontAwesome name="plus"/></div>
                 <div className="btn-toolbar" onClick={this.zoomReset}><FontAwesome name="retweet" /></div>
                 <div className="btn-toolbar" onClick={this.zoomOut}><FontAwesome name="minus" /></div>
             </div>
